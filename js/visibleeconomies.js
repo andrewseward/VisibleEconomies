@@ -28,6 +28,20 @@ $(function() {
   });
 */
 
+  var TagView = Parse.View.extend({
+    tagName:  "li",
+
+    template: _.template($('#tag-template').html()),
+
+    initialize: function() {
+    },
+    
+    render: function() {
+      console.log("render");
+      $(this.el).html(this.model.toJSON()["tagName"]);
+      return this;
+    },
+  });
 
   var SearchView = Parse.View.extend({
     searchTemplate: _.template($('#search-template').html()),
@@ -36,13 +50,61 @@ $(function() {
     },
 
     initialize: function() {
+      var self = this;
+      _.bindAll(this, 'addOne', 'addAll');
+
+      this.tagList = new TagList();
+      this.tagList.query = new Parse.Query(Tag);
+      this.tagList.query.limit(10);
+
+      this.fetch()
+    },
+    
+    fetch: function() {
+      this.tagList.fetch({
+        success: this.addAll
+      });
+    },
+
+    filter: function() {
+      this.addAll();
     },
 
     render: function() {
       return this.$searchTemplate;
-    }
+    },
+
+    addOne: function(tag) {
+      var view = new TagView({model: tag});
+      $("#top-tags").append(view.render().el);
+    },
+
+    // Add all items in the Todos collection at once.
+    addAll: function(collection, filter) {
+      $("#top-tags").html("");
+      this.tagList.each(this.addOne);
+    },
   });
 
+
+  // Profile class
+  var Profile = Parse.Object.extend("Profile", {
+  });
+
+
+  // collection of profiles (results)
+  var ProfileList = Parse.Collection.extend({
+  });
+
+
+  // Tag class
+  var Tag = Parse.Object.extend("Tag", {
+  });
+
+
+  // collection of tags
+  var TagList = Parse.Collection.extend({
+  });
 
   
   // main view for the app
