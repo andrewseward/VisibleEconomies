@@ -19,7 +19,7 @@ $(function() {
     },
     
     render: function() {
-      $(this.el).html(this.model.toJSON()["firstname"]);
+      $(this.el).html(this.template(this.model.toJSON()));
       return this;
     },
   });
@@ -67,11 +67,9 @@ $(function() {
     },
     
     fetch: function() {
-      this.tagList = new TagList();
-      var tagList = this.tagList;
+      var tagList = state.tagList;
 
-      this.profileList = new ProfileList();
-      var profileList = this.profileList;
+      var profileList = state.profileList;
 
       var self = this;
       Parse.Cloud.run("topTags", "", {
@@ -105,7 +103,7 @@ $(function() {
 
     addAllTags: function(collection, filter) {
       $("#top-tags").html("");
-      this.tagList.each(this.addOneTag);
+      state.tagList.each(this.addOneTag);
     },
 
     addOneProfile: function(profile) {
@@ -115,7 +113,7 @@ $(function() {
 
     addAllProfiles: function(collection, filter) {
       $("#results-list").html("");
-      this.profileList.each(this.addOneProfile);
+      state.profileList.each(this.addOneProfile);
     },
   });
 
@@ -178,6 +176,8 @@ $(function() {
 
 
   var state = new AppState;
+  state.profileList = new ProfileList();
+  state.tagList = new TagList();
 
   new AppRouter;
   new AppView;
