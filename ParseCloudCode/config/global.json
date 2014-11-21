@@ -1,0 +1,14 @@
+{
+    "applications": {
+        "HorrorPottery": {
+            "applicationId": "RmWiMOjHfkLRlkXsK29dzlZ3kLLyL887Qwe4STkU", 
+            "masterKey": "Kb7VJg6ButJz3v82xP9BGiIFbhIM5YBwe7YwNJXF"
+        }, 
+        "_default": {
+            "link": "HorrorPottery"
+        }
+    }, 
+    "global": {
+        "parseVersion": "1.3.1"
+    }
+}
