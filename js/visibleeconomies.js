@@ -53,16 +53,22 @@ $(function() {
       var self = this;
       _.bindAll(this, 'addOne', 'addAll');
 
-      this.tagList = new TagList();
-      this.tagList.query = new Parse.Query(Tag);
-      this.tagList.query.limit(10);
+//      this.tagList = new TagList();
+//      this.tagList.query = new Parse.Query(Tag);
+//      this.tagList.query.limit(10);
 
       this.fetch()
     },
     
     fetch: function() {
-      this.tagList.fetch({
-        success: this.addAll
+      this.tagList = new TagList();
+      var tagList = this.tagList;
+      var self = this;
+      Parse.Cloud.run("topTags", "", {
+        success: function(result) {
+          tagList.add(result);
+          self.addAll();
+        }
       });
     },
 
