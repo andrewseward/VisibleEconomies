@@ -9,24 +9,20 @@ $(function() {
   });
 
 
-/*
-  var PageParse.View.extend({
-    searchTemplate: _.template('#search-template').html(),
 
-    events: {
-    },
+  var ProfileView = Parse.View.extend({
+    tagName:  "li",
 
-    el: ".visibleeconomies",
+    template: _.template($('#result-template').html()),
 
     initialize: function() {
-      this.render();
     },
-
+    
     render: function() {
-      new SearchView();
-    }
+      $(this.el).html(this.model.toJSON()["firstname"]);
+      return this;
+    },
   });
-*/
 
   var TagView = Parse.View.extend({
     tagName:  "li",
@@ -37,8 +33,22 @@ $(function() {
     },
     
     render: function() {
-      console.log("render");
       $(this.el).html(this.model.toJSON()["tagName"]);
+      return this;
+    },
+  });
+
+  var ResultsView = Parse.View.extend({
+    tagName:  "li",
+
+    template: _.template($('#results-list').html()),
+
+    initialize: function() {
+    },
+    
+    render: function() {
+      console.log("render");
+      $(this.el).html(this.model.toJSON()["firstname"]);
       return this;
     },
   });
@@ -51,11 +61,7 @@ $(function() {
 
     initialize: function() {
       var self = this;
-      _.bindAll(this, 'addOne', 'addAll');
-
-//      this.tagList = new TagList();
-//      this.tagList.query = new Parse.Query(Tag);
-//      this.tagList.query.limit(10);
+      _.bindAll(this, 'addOneTag', 'addAllTags', 'addOneProfile', 'addAllProfiles');
 
       this.fetch()
     },
@@ -63,32 +69,53 @@ $(function() {
     fetch: function() {
       this.tagList = new TagList();
       var tagList = this.tagList;
+
+      this.profileList = new ProfileList();
+      var profileList = this.profileList;
+
       var self = this;
       Parse.Cloud.run("topTags", "", {
         success: function(result) {
           tagList.add(result);
-          self.addAll();
+          self.addAllTags();
+        }
+      });
+      Parse.Cloud.run("matchingProfiles", "", {
+        success: function(result) {
+          profileList.add(result);
+          self.addAllProfiles();
         }
       });
     },
 
+/*
     filter: function() {
-      this.addAll();
+      this.addAllTags();
     },
+*/
 
     render: function() {
       return this.$searchTemplate;
     },
 
-    addOne: function(tag) {
+    addOneTag: function(tag) {
       var view = new TagView({model: tag});
       $("#top-tags").append(view.render().el);
     },
 
-    // Add all items in the Todos collection at once.
-    addAll: function(collection, filter) {
+    addAllTags: function(collection, filter) {
       $("#top-tags").html("");
-      this.tagList.each(this.addOne);
+      this.tagList.each(this.addOneTag);
+    },
+
+    addOneProfile: function(profile) {
+      var view = new ProfileView({model: profile});
+      $("#results-list").append(view.render().el);
+    },
+
+    addAllProfiles: function(collection, filter) {
+      $("#results-list").html("");
+      this.profileList.each(this.addOneProfile);
     },
   });
 
@@ -108,6 +135,11 @@ $(function() {
   });
 
 
+  // collection of profiles
+  var ProfileList = Parse.Collection.extend({
+  });
+
+  
   // collection of tags
   var TagList = Parse.Collection.extend({
   });

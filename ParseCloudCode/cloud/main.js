@@ -35,6 +35,11 @@ Parse.Cloud.define("topTags", function(request, response) {
   tags.topTags(request, response);
 });
 
+Parse.Cloud.define("matchingProfiles", function(request, response) {
+  var profile = require('cloud/profile.js');
+  profile.matchingProfiles(request, response);
+});
+
 Parse.Cloud.define("hello", function(request, response) {
   response.success("hello");
 });

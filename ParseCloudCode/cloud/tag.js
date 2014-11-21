@@ -1,6 +1,7 @@
 exports.topTags = function(request, response) {
   var query = new Parse.Query("Tag");
   query.limit(10);
+  query.descending("usage");
   query.find({
     success: function(results) {
       response.success(results);
