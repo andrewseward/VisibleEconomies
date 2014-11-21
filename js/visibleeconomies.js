@@ -24,22 +24,48 @@ $(function() {
     },
   });
 
-  var TagView = Parse.View.extend({
+  var SelectedTagView = Parse.View.extend({
     tagName:  "li",
 
-    template: _.template($('#tag-template').html()),
+    template: _.template($('#selected-tag-template').html()),
 
     initialize: function() {
     },
-    
+
     render: function() {
       $(this.el).html(this.model.toJSON()["tagName"]);
       return this;
     },
   });
 
-  var ResultsView = Parse.View.extend({
+  var TagView = Parse.View.extend({
     tagName:  "li",
+
+    template: _.template($('#tag-template').html()),
+
+    events: {
+      "click label.available-tag-name" : "topTagClick",
+    },
+    
+    topTagClick: function(event) {
+      state.tagList.remove(this.model);
+      state.trigger("tagList");
+      state.selectedTagList.add(this.model);
+      state.trigger("selectedTagList");
+      console.log("top tag click");
+    },
+
+    initialize: function() {
+    },
+    
+    render: function() {
+      $(this.el).html(this.template(this.model.toJSON()));
+      return this;
+    },
+  });
+
+  var ResultsView = Parse.View.extend({
+//    tagName:  "li",
 
     template: _.template($('#results-list').html()),
 
@@ -64,17 +90,23 @@ $(function() {
       _.bindAll(this, 'addOneTag', 'addAllTags', 'addOneProfile', 'addAllProfiles');
 
       this.fetch()
+      
+      state.on("tagList", this.allAllTags, this);
+    },
+
+    onChangeTagList: function(e) {
+      console.log("change: " + e);
     },
     
     fetch: function() {
-      var tagList = state.tagList;
-
       var profileList = state.profileList;
+      var tagList = state.tagList;
 
       var self = this;
       Parse.Cloud.run("topTags", "", {
         success: function(result) {
           tagList.add(result);
+          state.trigger("tagList");
           self.addAllTags();
         }
       });
@@ -143,6 +175,11 @@ $(function() {
   });
 
   
+  // collection of selected tags
+  var SelectedTagList = Parse.Collection.extend({
+  });
+
+  
   // main view for the app
   var AppView = Parse.View.extend({
     // load the search template
@@ -150,6 +187,10 @@ $(function() {
 
     // bind to element already in the DOM
     el: $("#visibleeconomies"),
+
+//    onChange: function(e) {
+//      console.log("change: " + e);
+//    },
 
     initialize: function() {
       var self = this;
@@ -160,10 +201,12 @@ $(function() {
 
       var centre = this.$("#content");
       centre.html(this.searchTemplate());
+
+      //state.on("tagList", this.onChange, this);
     },
 
     render: function() {
-    }
+    },
   });
 
   var AppRouter = Parse.Router.extend({
@@ -178,6 +221,8 @@ $(function() {
   var state = new AppState;
   state.profileList = new ProfileList();
   state.tagList = new TagList();
+  state.selectedTagList = new TagList();
+
 
   new AppRouter;
   new AppView;
