@@ -30,21 +30,16 @@ $(function() {
 
 
   var SearchView = Parse.View.extend({
-//    searchTemplate: _.template('#search-template').html(),
+    searchTemplate: _.template($('#search-template').html()),
 
     events: {
     },
 
-    el: ".content",
-
     initialize: function() {
-      this.render();
     },
 
     render: function() {
-//console.log("underscore: " + _.template('#search-template').html());
-console.log("result: " + _.template('#search-template')());
-      return "hello";
+      return this.$searchTemplate;
     }
   });
 
@@ -52,6 +47,9 @@ console.log("result: " + _.template('#search-template')());
   
   // main view for the app
   var AppView = Parse.View.extend({
+    // load the search template
+    searchTemplate: _.template($('#search-template').html()),
+
     // bind to element already in the DOM
     el: $("#visibleeconomies"),
 
@@ -59,10 +57,14 @@ console.log("result: " + _.template('#search-template')());
       var self = this;
 
       this.$el.html(_.template($("#page-template").html()));
+
+      var searchView = new SearchView();
+
+      var centre = this.$("#content");
+      centre.html(this.searchTemplate());
     },
 
     render: function() {
-      new SearchView();
     }
   });
 
