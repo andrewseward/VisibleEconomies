@@ -1,32 +1,53 @@
 body {
-    background: #eee;
-    text-align: center;
-    padding: 0 25px;
+    background: #fcfcfc;
+    position: relative;
 }
 
-#main {
-    width: 500px;
-    margin: auto;
-    text-align: left;
-    background: white;
-    padding: 50px 60px;
-    border: solid #ddd;
-    border-width: 0 1px 1px 1px;
-}
-
-#main h1 {
+h1 {
     margin-top: 0;
     font-size: 35px;
+    float: left;
+   
 }
 
-#main ul {
-    padding-left: 20px;
+.title {
+	width: 800px;
+	height: 40px;
+	margin: auto;
+	}
+
+button {
+	float: right;
+	top: 10px;
+	position: relative;
+	}
+
+ul {
+	list-style-type: none;
+	margin: 0;
+	text-align: center;
 }
 
-#main .error {
+#top-tags {margin: 0px}
+
+li {display: inline;
+	margin: 2px;
+}
+
+.error {
     border: 1px solid red;
     background: #FDEFF0;
     padding: 20px;
+}
+
+#content {
+	width: 800px;
+	margin: auto;
+	}
+
+#results-list {
+	width 800px;
+	margin: auto;
 }
 
 #main .success {
