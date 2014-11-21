@@ -28,27 +28,34 @@
   </script>
 
   <script type="text/template" id="search-template">
-    <div id="selected-tags"></div>
+    <div id="selected-tags-div"><ul id="selected-tags"></ul></div>
     <div id="search-box"></div>
     <div id="where-box"></div>
-    <ul id="top-tags"><img src='images/spinner.gif' class='spinner' /></ul>
+    <div id="top-tags-div"><ul id="top-tags"><img src='images/spinner.gif' class='spinner' /></ul></div>
     <div id="map"></div>
-    <ul id="results-list"><img src='images/spinner.gif' class='spinner' /></ul>
+    <div id="profiles-div"><ul id="results-list"><img src='images/spinner.gif' class='spinner' /></ul></div>
+  </script>
+
+  <script type="text/template" id="selected-tag-template">
   </script>
 
   <script type="text/template" id="tag-template">
+      <div class="available-tag">
+        <label class="available-tag-name"><%= tagName %></label>
+      </div>
+  </script>
+
+  <script type="text/template" id="selected-tags">
   </script>
 
   <script type="text/template" id="top-tags">
   </script>
 
   <script type="text/template" id="result-template">
-    <li>
       <div class="profile">
         <label class="profile-name"><%= firstname + " " + lastname %></label>
         <label class="profile-email"><%= email %></label>
       </div>
-    </li>
   </script>
 
   <script type="text/template" id="results-list">

@@ -24,22 +24,45 @@ $(function() {
     },
   });
 
-  var TagView = Parse.View.extend({
+  var SelectedTagView = Parse.View.extend({
     tagName:  "li",
 
-    template: _.template($('#tag-template').html()),
+    template: _.template($('#selected-tag-template').html()),
 
     initialize: function() {
     },
-    
+
     render: function() {
       $(this.el).html(this.model.toJSON()["tagName"]);
       return this;
     },
   });
 
-  var ResultsView = Parse.View.extend({
+  var TagView = Parse.View.extend({
     tagName:  "li",
+
+    template: _.template($('#tag-template').html()),
+
+    events: {
+      "click label.available-tag-name" : "topTagClick",
+    },
+    
+    topTagClick: function(event) {
+      state.tagList.remove(this.model);
+      state.selectedTagList.add(this.model);
+    },
+
+    initialize: function() {
+    },
+    
+    render: function() {
+      $(this.el).html(this.template(this.model.toJSON()));
+      return this;
+    },
+  });
+
+  var ResultsView = Parse.View.extend({
+//    tagName:  "li",
 
     template: _.template($('#results-list').html()),
 
@@ -47,7 +70,6 @@ $(function() {
     },
     
     render: function() {
-      console.log("render");
       $(this.el).html(this.model.toJSON()["firstname"]);
       return this;
     },
@@ -61,15 +83,17 @@ $(function() {
 
     initialize: function() {
       var self = this;
-      _.bindAll(this, 'addOneTag', 'addAllTags', 'addOneProfile', 'addAllProfiles');
+      _.bindAll(this, 'addOneTag', 'addAllTags', 'addOneSelectedTag', 'addAllSelectedTags', 'addOneProfile', 'addAllProfiles');
 
       this.fetch()
+      
+      state.tagList.on("add remove", this.addAllTags, this);
+      state.selectedTagList.on("add remove", this.addAllSelectedTags, this);
     },
-    
-    fetch: function() {
-      var tagList = state.tagList;
 
+    fetch: function() {
       var profileList = state.profileList;
+      var tagList = state.tagList;
 
       var self = this;
       Parse.Cloud.run("topTags", "", {
@@ -86,12 +110,6 @@ $(function() {
       });
     },
 
-/*
-    filter: function() {
-      this.addAllTags();
-    },
-*/
-
     render: function() {
       return this.$searchTemplate;
     },
@@ -104,6 +122,16 @@ $(function() {
     addAllTags: function(collection, filter) {
       $("#top-tags").html("");
       state.tagList.each(this.addOneTag);
+    },
+
+    addOneSelectedTag: function(tag) {
+      var view = new TagView({model: tag});
+      $("#selected-tags").append(view.render().el);
+    },
+
+    addAllSelectedTags: function(collection, filter) {
+      $("#selected-tags").html("");
+      state.selectedTagList.each(this.addOneSelectedTag);
     },
 
     addOneProfile: function(profile) {
@@ -143,6 +171,11 @@ $(function() {
   });
 
   
+  // collection of selected tags
+  var SelectedTagList = Parse.Collection.extend({
+  });
+
+  
   // main view for the app
   var AppView = Parse.View.extend({
     // load the search template
@@ -163,7 +196,7 @@ $(function() {
     },
 
     render: function() {
-    }
+    },
   });
 
   var AppRouter = Parse.Router.extend({
@@ -178,6 +211,8 @@ $(function() {
   var state = new AppState;
   state.profileList = new ProfileList();
   state.tagList = new TagList();
+  state.selectedTagList = new TagList();
+
 
   new AppRouter;
   new AppView;
