@@ -29,6 +29,12 @@ Parse.Cloud.job("convertMockData", function(request, status) {
 */
 });
 
+
+Parse.Cloud.define("topTags", function(request, response) {
+  var tags = require('cloud/tag.js');
+  tags.topTags(request, response);
+});
+
 Parse.Cloud.define("hello", function(request, response) {
   response.success("hello");
 });
