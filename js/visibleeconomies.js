@@ -49,10 +49,7 @@ $(function() {
     
     topTagClick: function(event) {
       state.tagList.remove(this.model);
-      state.trigger("tagList");
       state.selectedTagList.add(this.model);
-      state.trigger("selectedTagList");
-      console.log("top tag click");
     },
 
     initialize: function() {
@@ -73,7 +70,6 @@ $(function() {
     },
     
     render: function() {
-      console.log("render");
       $(this.el).html(this.model.toJSON()["firstname"]);
       return this;
     },
@@ -87,17 +83,14 @@ $(function() {
 
     initialize: function() {
       var self = this;
-      _.bindAll(this, 'addOneTag', 'addAllTags', 'addOneProfile', 'addAllProfiles');
+      _.bindAll(this, 'addOneTag', 'addAllTags', 'addOneSelectedTag', 'addAllSelectedTags', 'addOneProfile', 'addAllProfiles');
 
       this.fetch()
       
-      state.on("tagList", this.allAllTags, this);
+      state.tagList.on("add remove", this.addAllTags, this);
+      state.selectedTagList.on("add remove", this.addAllSelectedTags, this);
     },
 
-    onChangeTagList: function(e) {
-      console.log("change: " + e);
-    },
-    
     fetch: function() {
       var profileList = state.profileList;
       var tagList = state.tagList;
@@ -106,7 +99,6 @@ $(function() {
       Parse.Cloud.run("topTags", "", {
         success: function(result) {
           tagList.add(result);
-          state.trigger("tagList");
           self.addAllTags();
         }
       });
@@ -117,12 +109,6 @@ $(function() {
         }
       });
     },
-
-/*
-    filter: function() {
-      this.addAllTags();
-    },
-*/
 
     render: function() {
       return this.$searchTemplate;
@@ -136,6 +122,16 @@ $(function() {
     addAllTags: function(collection, filter) {
       $("#top-tags").html("");
       state.tagList.each(this.addOneTag);
+    },
+
+    addOneSelectedTag: function(tag) {
+      var view = new TagView({model: tag});
+      $("#selected-tags").append(view.render().el);
+    },
+
+    addAllSelectedTags: function(collection, filter) {
+      $("#selected-tags").html("");
+      state.selectedTagList.each(this.addOneSelectedTag);
     },
 
     addOneProfile: function(profile) {
@@ -188,10 +184,6 @@ $(function() {
     // bind to element already in the DOM
     el: $("#visibleeconomies"),
 
-//    onChange: function(e) {
-//      console.log("change: " + e);
-//    },
-
     initialize: function() {
       var self = this;
 
@@ -201,8 +193,6 @@ $(function() {
 
       var centre = this.$("#content");
       centre.html(this.searchTemplate());
-
-      //state.on("tagList", this.onChange, this);
     },
 
     render: function() {
