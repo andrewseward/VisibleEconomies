@@ -4,9 +4,11 @@ body {
 }
 
 h1 {
-    margin-top: 0;
+    margin-top: 5px;;
+    margin-bottom: -10px;
     font-size: 35px;
     float: left;
+     
    
 }
 
@@ -18,20 +20,36 @@ h1 {
 
 button {
 	float: right;
-	top: 10px;
+	top: 17px;
 	position: relative;
 	}
 
 ul {
 	list-style-type: none;
-	margin: 0;
 	text-align: center;
+
 }
 
-#top-tags {margin: 0px}
+li  {
+	display: inline;
+}
 
-li {display: inline;
+#top-tags-div li  {
+	border: 1px solid black;
+	padding: 3px;
 	margin: 2px;
+	border-radius: 2px;
+}
+
+#selected-tags-div li {
+	border: 2px solid #8b79d0;
+	padding: 3px;
+	margin: 2px;
+	border-radius: 2px;
+}
+
+#profiles-div {
+	margin-top: 10px;
 }
 
 .error {

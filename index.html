@@ -22,6 +22,8 @@
       <button>Sell your skills</button>
     </div>
     
+    <hr>
+    
     
     <div id="content"> </div>
     
@@ -31,18 +33,18 @@
     <div id="selected-tags-div"><ul id="selected-tags"></ul></div>
     <div id="search-box"></div>
     <div id="where-box"></div>
-    <div id="top-tags-div"><ul id="top-tags"><img src='images/spinner.gif' class='spinner' /></ul></div>
+    <div id="top-tags-div"><ul id="top-tags"> <img src='images/spinner.gif' class='spinner' /> </ul> </div>
     <div id="map"></div>
-    <div id="profiles-div"><ul id="results-list"><img src='images/spinner.gif' class='spinner' /></ul></div>
+    <div id="profiles-div"><ul id="results-list"> <img src='images/spinner.gif' class='spinner' /></ul></div>
   </script>
 
   <script type="text/template" id="selected-tag-template">
   </script>
 
   <script type="text/template" id="tag-template">
-      <div class="available-tag">
+
         <label class="available-tag-name"><%= tagName %></label>
-      </div>
+
   </script>
 
   <script type="text/template" id="selected-tags">
@@ -53,8 +55,10 @@
 
   <script type="text/template" id="result-template">
       <div class="profile">
+	      <li>
         <label class="profile-name"><%= firstname + " " + lastname %></label>
         <label class="profile-email"><%= email %></label>
+        </li>
       </div>
   </script>
 
