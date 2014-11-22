@@ -162,6 +162,12 @@ $(function() {
 
           result.forEach(function(profile) {
             if (Math.random() < probability)
+              var hash = profile.get("firstname") + profile.get("lastname") + profile.get("email");
+              var length = hash.length;
+              var imageNumber = length %17;
+              var image = "images/" + imageNumber + ".jpg";
+              //profile.set("image", "http://img1.wikia.nocookie.net/__cb20130318151721/epicrapbattlesofhistory/images/6/6d/Rick-astley.jpg");
+              profile.set("image", image);
               state.profileList.add(profile);
           });
           state.profileList.trigger("profileschanged");
