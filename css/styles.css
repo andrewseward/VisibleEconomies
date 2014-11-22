@@ -36,6 +36,10 @@ li  {
 
 #top-tags-div li  {
 	border: 1px solid black;
+	color: white;
+	font-size: 12px;
+	text-transform: uppercase;
+	background-color: rgba(66, 57, 118, 0.98);
 	padding: 3px;
 	margin: 2px;
 	border-radius: 3px;
@@ -46,10 +50,15 @@ li  {
 }
 
 #selected-tags-div li {
-	border: 1px solid #8b79d0;
+	border: 1px solid #292442;
+	background-color: rgba(66, 56, 118, 0.74);
+	font-size: 12px;
+	font-weight: bold;
+	color: white;
 	padding: 3px;
 	margin: 2px;
 	border-radius: 3px;
+	text-transform: uppercase;
 }
 
 #selected-tags-div li:hover {
