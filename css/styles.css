@@ -38,15 +38,23 @@ li  {
 	border: 1px solid black;
 	padding: 3px;
 	margin: 2px;
-	border-radius: 2px;
+	border-radius: 3px;
+}
+
+#top-tags-div li:hover  {
+	box-shadow: 0px 1px 1px black;
 }
 
 #selected-tags-div li {
-	border: 2px solid #8b79d0;
+	border: 1px solid #8b79d0;
 	padding: 3px;
 	margin: 2px;
-	border-radius: 2px;
+	border-radius: 3px;
 }
+
+#selected-tags-div li:hover {
+		border: 1px inset #bf0d0d;
+	}
 
 #profiles-div {
 	margin-top: 10px;
@@ -62,11 +70,6 @@ li  {
 	width: 800px;
 	margin: auto;
 	}
-
-#results-list {
-	width 800px;
-	margin: auto;
-}
 
 #main .success {
     margin-top: 25px;
