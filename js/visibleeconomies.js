@@ -99,6 +99,16 @@ $(function() {
       state.tagList.on("add remove", this.addAllAvailableTags, this);
       state.selectedTagList.on("add remove", this.addAllSelectedTags, this);
       state.selectedTagList.on("add remove", this.fetch, this);
+      state.profileList.on("profileschanged", this.profilesChanged, this);
+    },
+
+    profilesChanged: function() {
+      state.profileList.toArray().forEach(function(object) {
+        var jsonObject = object.toJSON();
+        var firstName = jsonObject["firstname"];
+        var geoPoint = jsonObject["geopoint"];
+        console.log("firstname/lat/lon: " + firstName + " " + geoPoint.latitude + " " + geoPoint.longitude);
+      });
     },
 
     fetch: function() {
@@ -120,6 +130,7 @@ $(function() {
         success: function(result) {
           state.profileList.remove(state.profileList.toArray());
           state.profileList.add(result);
+          state.profileList.trigger("profileschanged");
           self.addAllProfiles();
         }
       });
@@ -228,7 +239,8 @@ $(function() {
   new AppView;
 //  Parse.history.start();
   
-  var profileQuery = new Parse.Query("Profile");
+
+/*  var profileQuery = new Parse.Query("Profile");
   profileQuery.containedIn("tagName", ["enamel", "woodwork"]);
   profileQuery.find({
     success: function(tagResults) {
@@ -259,6 +271,6 @@ $(function() {
       console.log("failure");
     }
   });
-
+*/
 });
 
