@@ -27,27 +27,37 @@ $(function() {
   var SelectedTagView = Parse.View.extend({
     tagName:  "li",
 
-    template: _.template($('#selected-tag-template').html()),
+    template: _.template($('#tag-template').html()),
+
+    events: {
+      "click label.tag-name" : "selectedTagClick",
+    },
+
+    selectedTagClick: function(event) {
+      state.selectedTagList.remove(this.model);
+      state.tagList.add(this.model);
+    },
 
     initialize: function() {
     },
 
     render: function() {
-      $(this.el).html(this.model.toJSON()["tagName"]);
+      $(this.el).html(this.template(this.model.toJSON()));
       return this;
     },
   });
 
-  var TagView = Parse.View.extend({
+
+  var AvailableTagView = Parse.View.extend({
     tagName:  "li",
 
     template: _.template($('#tag-template').html()),
 
     events: {
-      "click label.available-tag-name" : "topTagClick",
+      "click label.tag-name" : "availableTagClick",
     },
 
-    topTagClick: function(event) {
+    availableTagClick: function(event) {
       state.tagList.remove(this.model);
       state.selectedTagList.add(this.model);
     },
@@ -61,9 +71,8 @@ $(function() {
     },
   });
 
-  var ResultsView = Parse.View.extend({
-//    tagName:  "li",
 
+  var ResultsView = Parse.View.extend({
     template: _.template($('#results-list').html()),
 
     initialize: function() {
@@ -83,28 +92,34 @@ $(function() {
 
     initialize: function() {
       var self = this;
-      _.bindAll(this, 'addOneTag', 'addAllTags', 'addOneSelectedTag', 'addAllSelectedTags', 'addOneProfile', 'addAllProfiles');
+      _.bindAll(this, 'addOneAvailableTag', 'addAllAvailableTags', 'addOneSelectedTag', 'addAllSelectedTags', 'addOneProfile', 'addAllProfiles');
 
       this.fetch()
 
-      state.tagList.on("add remove", this.addAllTags, this);
+      state.tagList.on("add remove", this.addAllAvailableTags, this);
       state.selectedTagList.on("add remove", this.addAllSelectedTags, this);
+      state.selectedTagList.on("add remove", this.fetch, this);
     },
 
     fetch: function() {
-      var profileList = state.profileList;
-      var tagList = state.tagList;
-
       var self = this;
-      Parse.Cloud.run("topTags", "", {
+
+      var tagNames = [];
+      state.selectedTagList.toArray().forEach(function(object) {
+        tagNames.push(object.toJSON().tagName);
+      });
+
+      Parse.Cloud.run("topTags", {"tagNames":tagNames}, {
         success: function(result) {
-          tagList.add(result);
-          self.addAllTags();
+          state.tagList.remove(state.tagList.toArray());
+          state.tagList.add(result);
+          self.addAllAvailableTags();
         }
       });
-      Parse.Cloud.run("matchingProfiles", "", {
+      Parse.Cloud.run("matchingProfiles", {"tagNames":tagNames}, {
         success: function(result) {
-          profileList.add(result);
+          state.profileList.remove(state.profileList.toArray());
+          state.profileList.add(result);
           self.addAllProfiles();
         }
       });
@@ -115,18 +130,18 @@ $(function() {
       return this.$searchTemplate;
     },
 
-    addOneTag: function(tag) {
-      var view = new TagView({model: tag});
+    addOneAvailableTag: function(tag) {
+      var view = new AvailableTagView({model: tag});
       $("#top-tags").append(view.render().el);
     },
 
-    addAllTags: function(collection, filter) {
+    addAllAvailableTags: function(collection, filter) {
       $("#top-tags").html("");
-      state.tagList.each(this.addOneTag);
+      state.tagList.each(this.addOneAvailableTag);
     },
 
     addOneSelectedTag: function(tag) {
-      var view = new TagView({model: tag});
+      var view = new SelectedTagView({model: tag});
       $("#selected-tags").append(view.render().el);
     },
 
@@ -171,12 +186,9 @@ $(function() {
   var TagList = Parse.Collection.extend({
   });
 
-
   // collection of selected tags
   var SelectedTagList = Parse.Collection.extend({
   });
-
-
   // main view for the app
   var AppView = Parse.View.extend({
     // load the search template
@@ -220,5 +232,38 @@ $(function() {
   new AppRouter;
   new AppView;
 //  Parse.history.start();
+
+  var profileQuery = new Parse.Query("Profile");
+  profileQuery.containedIn("tagName", ["enamel", "woodwork"]);
+  profileQuery.find({
+    success: function(tagResults) {
+      console.log("success");
+    },
+    error: function() {
+      console.log("failure");
+    }
+  });
+
+  // this finds all the joins where those tags appear
+  var joinQuery = new Parse.Query("ProfileTag");
+  joinQuery.matchesQuery("tag", tagQuery);
+  joinQuery.limit(20);
+//  joinQuery.includeKey("profile");
+
+  joinQuery.find({
+    success: function(joinResults) {
+      var profiles = [];
+
+      joinResults.forEach(function(object) {
+        profiles.push(object.profile);
+      });
+
+     console.log("success");
+    },
+    error: function() {
+      console.log("failure");
+    }
+  });
+
 });
 
