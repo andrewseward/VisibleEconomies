@@ -1,9 +1,25 @@
 var map;
 var markers = [];
 
+var markerImage = new google.maps.MarkerImage(
+    'https://cdn1.iconfinder.com/data/icons/Map-Markers-Icons-Demo-PNG/256/Map-Marker-Marker-Outside-Azure.png',
+    null, /* size is determined at runtime */
+    null, /* origin is 0,0 */
+    null, /* anchor is bottom center of the scaled image */
+    new google.maps.Size(30, 30)
+  );
+
+var highlightMarkerImage = new google.maps.MarkerImage(
+    'https://cdn1.iconfinder.com/data/icons/Map-Markers-Icons-Demo-PNG/256/Map-Marker-Marker-Outside-Chartreuse.png',
+    null, /* size is determined at runtime */
+    null, /* origin is 0,0 */
+    null, /* anchor is bottom center of the scaled image */
+    new google.maps.Size(30, 30)
+  );
+
 function initializeMap() {
   var mapOptions = {
-    zoom: 11
+    zoom: 9
   };
   map = new google.maps.Map(document.getElementById('map-canvas'),
       mapOptions);
@@ -37,7 +53,7 @@ function clearMapMarkers(){
   markers = [];
 }
 
-function addMapMarker(latitude, longitude){
+function addMapMarker(latitude, longitude, objectId){
 
 
   /*var markerImage = {
@@ -50,22 +66,42 @@ function addMapMarker(latitude, longitude){
     anchor: new google.maps.Point(0, 32)
   };*/
 
-  var markerImage = new google.maps.MarkerImage(
-    'https://cdn1.iconfinder.com/data/icons/Map-Markers-Icons-Demo-PNG/256/Map-Marker-Marker-Outside-Azure.png',
-    null, /* size is determined at runtime */
-    null, /* origin is 0,0 */
-    null, /* anchor is bottom center of the scaled image */
-    new google.maps.Size(30, 30)
-);
 
 
   var newMarker = new google.maps.Marker({
       position: new google.maps.LatLng(latitude, longitude),
       map: map,
-      icon: markerImage
+      icon: markerImage,
+      title: objectId
   });
 
   markers.push(newMarker);
+}
+
+function highlightMarker(objectId){
+  unHighlightMarkers();
+  var marker = getMarkerById(objectId);
+  marker.setIcon(highlightMarkerImage);
+}
+
+function getMarkerById(objectId){
+  var marker = null;
+
+  var i=0;
+  while ((i < markers.length) && (marker==null))
+  {
+    if (markers[i].getTitle() == objectId){
+      marker= markers[i];
+    }
+    i++;
+  }
+  return marker;
+}
+
+function unHighlightMarkers(){
+  for (var i=0; i<markers.length; i++){
+    markers[i].setIcon(markerImage);
+  }
 }
 
 function handleNoGeolocation(errorFlag) {
