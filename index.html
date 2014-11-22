@@ -35,7 +35,7 @@
   <!-- search section -->
   <script type="text/template" id="search-template">
     <div id="selected-tags-div"><ul id="selected-tags"></ul></div>
-    <div id="search-box"></div>
+    <div id="search-box"><input type="text" id="search" placeholder="SEARCH"></div>
     <div id="where-box"></div>
     <div id="top-tags-div"><ul id="top-tags"> <img src='images/spinner.gif' class='spinner' /> </ul> </div>
     <div id="map-canvas"></div>
@@ -54,8 +54,8 @@
   </script>
   <script type="text/template" id="result-template">
       <div class="profile">
-	      <li>
-        <label class="profile-name"><%= firstname + " " + lastname %></label>
+	      <li id="prof">
+        <label class="profile-name"><%= firstname + " " + lastname %></label> </br>
         <label class="profile-email"><%= email %></label>
         </li>
       </div>
