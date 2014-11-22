@@ -1,20 +1,6 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <style type="text/css">
-      html, body, #map-canvas { height: 100%; margin: 0px; padding: 0px;}
-    </style>
-    <script type="text/javascript"
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB8YbvBe6FobmIv59Vfk7AX2dTL8GujQ0M">
-    </script>
-    <script type="text/javascript">
-    // Note: This example requires that you consent to location sharing when
-// prompted by your browser. If you see a blank space instead of the map, this
-// is probably because you have denied permission for location sharing.
-
 var map;
 
-function initialize() {
+function initializeMap() {
   var mapOptions = {
     zoom: 14
   };
@@ -27,10 +13,10 @@ function initialize() {
       var pos = new google.maps.LatLng(position.coords.latitude,
                                        position.coords.longitude);
 
-      var infowindow = new google.maps.InfoWindow({
-        map: map,
-        position: pos,
-        content: 'You are here'
+      var marker = new google.maps.Marker({
+          position: pos,
+          map: map,
+          title: 'You are here'
       });
 
       map.setCenter(pos);
@@ -60,10 +46,4 @@ function handleNoGeolocation(errorFlag) {
   map.setCenter(options.position);
 }
 
-google.maps.event.addDomListener(window, 'load', initialize);
-</script>
-  </head>
-  <body>
-
-  </body>
-</html>
+//google.maps.event.addDomListener(window, 'load', initialize);

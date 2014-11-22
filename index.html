@@ -9,8 +9,11 @@
   <link rel="stylesheet" href="css/reset.css">
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
   <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.3.1.min.js"></script>
-  <script src="js/underscore.js"></script>
-  <script src="js/visibleeconomies.js"></script>
+  <script type="text/javascript" src="js/underscore.js"></script>
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB8YbvBe6FobmIv59Vfk7AX2dTL8GujQ0M"></script>
+  <script type="text/javascript" src="js/map.js"></script>
+  <script type="text/javascript" src="js/visibleeconomies.js"></script>
+
 </head>
 
 <body>
@@ -21,12 +24,12 @@
       <h1>VISIBLE ECONOMIES</h1>
       <button>Sell your skills</button>
     </div>
-    
+
     <hr>
-    
-    
+
+
     <div id="content"> </div>
-    
+
   </script>
 
   <!-- search section -->
@@ -35,7 +38,7 @@
     <div id="search-box"></div>
     <div id="where-box"></div>
     <div id="top-tags-div"><ul id="top-tags"> <img src='images/spinner.gif' class='spinner' /> </ul> </div>
-    <div id="map"></div>
+    <div id="map-canvas"></div>
     <div id="profiles-div"><ul id="results-list"> <img src='images/spinner.gif' class='spinner' /></ul></div>
   </script>
 
@@ -49,7 +52,6 @@
 
   <script type="text/template" id="top-tags">
   </script>
-
   <script type="text/template" id="result-template">
       <div class="profile">
 	      <li>

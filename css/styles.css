@@ -8,8 +8,8 @@ h1 {
     margin-bottom: -10px;
     font-size: 35px;
     float: left;
-     
-   
+
+
 }
 
 .title {
@@ -89,3 +89,4 @@ li  {
     color: green;
     line-height: 13px;
 }
+html, body, #map-canvas { height: 300px; width:100%; margin: 0px; padding: 0px;}
