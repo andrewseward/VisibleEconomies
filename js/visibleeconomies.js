@@ -149,12 +149,14 @@ $(function() {
       Parse.Cloud.run("matchingProfiles", {"tagNames":tagNames}, {
         success: function(result) {
           state.profileList.remove(state.profileList.toArray());
-          var probability = 1;
-          if (state.selectedTagNames.length == 1)
-            proability = 0.4;
+          var probability;
+          if (state.selectedTagNames.length == 0)
+            probability = 1.0;
+          else if (state.selectedTagNames.length == 1)
+            probability = 0.4;
           else if (state.selectedTagNames.length == 2)
             probability = 0.2;
-          else if (state.selectedTagNames.length == 3)
+          else
             probability = 0.1;
 
 
@@ -162,7 +164,6 @@ $(function() {
             if (Math.random() < probability)
               state.profileList.add(profile);
           });
-//          state.profileList.add(result);
           state.profileList.trigger("profileschanged");
           self.addAllProfiles();
         }
