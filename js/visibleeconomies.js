@@ -109,7 +109,7 @@ $(function() {
         var firstName = jsonObject["firstname"];
         var geoPoint = jsonObject["geopoint"];
 
-        addMapMarker(geoPoint.latitude, geoPoint.longitude);
+        addMapMarker(geoPoint.latitude, geoPoint.longitude, jsonObject["objectId"]);
         console.log("firstname/lat/lon: " + firstName + " " + geoPoint.latitude + " " + geoPoint.longitude);
       });
     },
