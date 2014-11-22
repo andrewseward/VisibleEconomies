@@ -103,10 +103,13 @@ $(function() {
     },
 
     profilesChanged: function() {
+      clearMapMarkers();
       state.profileList.toArray().forEach(function(object) {
         var jsonObject = object.toJSON();
         var firstName = jsonObject["firstname"];
         var geoPoint = jsonObject["geopoint"];
+
+        addMapMarker(geoPoint.latitude, geoPoint.longitude);
         console.log("firstname/lat/lon: " + firstName + " " + geoPoint.latitude + " " + geoPoint.longitude);
       });
     },
@@ -243,7 +246,7 @@ $(function() {
   new AppRouter;
   new AppView;
 //  Parse.history.start();
-  
+
 
 /*  var profileQuery = new Parse.Query("Profile");
   profileQuery.containedIn("tagName", ["enamel", "woodwork"]);
