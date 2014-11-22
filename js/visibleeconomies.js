@@ -1,7 +1,7 @@
 $(function() {
   Parse.$ = jQuery;
   Parse.initialize("RmWiMOjHfkLRlkXsK29dzlZ3kLLyL887Qwe4STkU", "cp6dx0CArZKNdrpjxKzYtlae2jIP0Go9WBaXr34O");
-  
+
   // This is the transient application state, not persisted on Parse
   var AppState = Parse.Object.extend("AppState", {
     defaults: {
@@ -17,7 +17,7 @@ $(function() {
 
     initialize: function() {
     },
-    
+
     render: function() {
       $(this.el).html(this.template(this.model.toJSON()));
       return this;
@@ -61,10 +61,10 @@ $(function() {
       state.tagList.remove(this.model);
       state.selectedTagList.add(this.model);
     },
-    
+
     initialize: function() {
     },
-    
+
     render: function() {
       $(this.el).html(this.template(this.model.toJSON()));
       return this;
@@ -77,7 +77,7 @@ $(function() {
 
     initialize: function() {
     },
-    
+
     render: function() {
       $(this.el).html(this.model.toJSON()["firstname"]);
       return this;
@@ -95,7 +95,7 @@ $(function() {
       _.bindAll(this, 'addOneAvailableTag', 'addAllAvailableTags', 'addOneSelectedTag', 'addAllSelectedTags', 'addOneProfile', 'addAllProfiles');
 
       this.fetch()
-      
+
       state.tagList.on("add remove", this.addAllAvailableTags, this);
       state.selectedTagList.on("add remove", this.addAllSelectedTags, this);
       state.selectedTagList.on("add remove", this.fetch, this);
@@ -137,6 +137,7 @@ $(function() {
     },
 
     render: function() {
+
       return this.$searchTemplate;
     },
 
@@ -191,12 +192,14 @@ $(function() {
   var ProfileList = Parse.Collection.extend({
   });
 
-  
+
   // collection of tags
   var TagList = Parse.Collection.extend({
   });
 
-  
+  // collection of selected tags
+  var SelectedTagList = Parse.Collection.extend({
+  });
   // main view for the app
   var AppView = Parse.View.extend({
     // load the search template
@@ -214,6 +217,8 @@ $(function() {
 
       var centre = this.$("#content");
       centre.html(this.searchTemplate());
+
+      initializeMap();
     },
 
     render: function() {
@@ -250,21 +255,21 @@ $(function() {
       console.log("failure");
     }
   });
-  
+
   // this finds all the joins where those tags appear
   var joinQuery = new Parse.Query("ProfileTag");
   joinQuery.matchesQuery("tag", tagQuery);
   joinQuery.limit(20);
 //  joinQuery.includeKey("profile");
-  
+
   joinQuery.find({
     success: function(joinResults) {
       var profiles = [];
-      
+
       joinResults.forEach(function(object) {
         profiles.push(object.profile);
       });
-        
+
      console.log("success");
     },
     error: function() {
