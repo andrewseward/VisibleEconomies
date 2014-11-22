@@ -36,6 +36,11 @@ $(function() {
     selectedTagClick: function(event) {
       state.selectedTagList.remove(this.model);
       state.tagList.add(this.model);
+
+      state.selectedTagNames = [];
+      state.selectedTagList.forEach(function(tag) {
+        state.selectedTagNames.push(tag.get("tagName"));
+      });
     },
 
     initialize: function() {
@@ -60,6 +65,11 @@ $(function() {
     availableTagClick: function(event) {
       state.tagList.remove(this.model);
       state.selectedTagList.add(this.model);
+
+      state.selectedTagNames = [];
+      state.selectedTagList.forEach(function(tag) {
+        state.selectedTagNames.push(tag.get("tagName"));
+      });
     },
 
     initialize: function() {
@@ -109,7 +119,7 @@ $(function() {
         var firstName = jsonObject["firstname"];
         var geoPoint = jsonObject["geopoint"];
 
-        addMapMarker(geoPoint.latitude, geoPoint.longitude);
+        addMapMarker(geoPoint.latitude, geoPoint.longitude, jsonObject["objectId"]);
         console.log("firstname/lat/lon: " + firstName + " " + geoPoint.latitude + " " + geoPoint.longitude);
       });
     },
@@ -125,14 +135,35 @@ $(function() {
       Parse.Cloud.run("topTags", {"tagNames":tagNames}, {
         success: function(result) {
           state.tagList.remove(state.tagList.toArray());
-          state.tagList.add(result);
+
+          result.forEach(function(tag) {
+            // hack!
+            if (!_.contains(state.selectedTagNames, tag.toJSON()["tagName"])) {
+                state.tagList.add(tag);
+            }
+          });
+          //state.tagList.add(result);
           self.addAllAvailableTags();
         }
       });
       Parse.Cloud.run("matchingProfiles", {"tagNames":tagNames}, {
         success: function(result) {
           state.profileList.remove(state.profileList.toArray());
-          state.profileList.add(result);
+          var probability;
+          if (state.selectedTagNames.length == 0)
+            probability = 1.0;
+          else if (state.selectedTagNames.length == 1)
+            probability = 0.4;
+          else if (state.selectedTagNames.length == 2)
+            probability = 0.2;
+          else
+            probability = 0.1;
+
+
+          result.forEach(function(profile) {
+            if (Math.random() < probability)
+              state.profileList.add(profile);
+          });
           state.profileList.trigger("profileschanged");
           self.addAllProfiles();
         }
@@ -241,6 +272,8 @@ $(function() {
   state.profileList = new ProfileList();
   state.tagList = new TagList();
   state.selectedTagList = new TagList();
+  // hack
+  state.selectedTagNames = [];
 
 
   new AppRouter;
