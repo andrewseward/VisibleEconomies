@@ -20,7 +20,7 @@ h1 {
 
 button {
 	float: right;
-	top: 15px;
+	top: 12px;
 	position: relative;
 	border-radius: 2px;
 	text-transform: uppercase;
@@ -87,17 +87,38 @@ br {
 	padding:10px 0px 10px 0px;
 	text-align: center;
 	border-radius: 3px;
-	font-size: 14px;
+	font-size: 17px;
 	
 }
 
 #prof {	
 	padding: 28px;
 	border: 1px solid rgba(0, 0, 0, 0.1);
-	border-radius: 3px;
-	margin-bottom: 12px;
-	background-color: #f4f4f4;
+	border-radius: 3px 3px 0px 0px;
+	background-color: #ededed;
+	font-weight: 500;
+	text-shadow: 0px 2px 1px white;
+	font-size: 16px;
 	}
+	
+#prof:hover {
+	border: 1px solid rgba(131, 148, 222, 0.61)
+}
+
+#enquire {
+	margin-bottom: 10px;
+	border-radius: 0px 0px 3px 3px;
+	background-color: rgba(57, 57, 57, 1);
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	border-top: none;
+	color: #efecec;
+	font-weight: 600;
+}
+
+#enquire:hover {
+	background-color: #22a042;
+	color: white;
+}
 
 .error {
     border: 1px solid red;
