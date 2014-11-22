@@ -89,7 +89,7 @@ sub { bottom: -0.25em; }
    Lists
    ========================================================================== */
 
-ul, ol { margin: 1em 0; padding: 0 0 0 40px; }
+ul, ol { margin: 1em 0; padding: 0 0 0 0px; }
 dd { margin: 0 0 0 40px; }
 nav ul, nav ol { list-style: none; list-style-image: none; margin: 0; padding: 0; }
 
@@ -142,7 +142,7 @@ legend { border: 0; *margin-left: -7px; padding: 0; white-space: normal; }
  * 3. Define consistent vertical alignment display in all browsers
  */
 
-button, input, select, textarea { font-size: 100%; margin: 0; vertical-align: baseline; *vertical-align: middle; }
+button, input, select, textarea { margin: 0; vertical-align: baseline; *vertical-align: middle; }
 
 /*
  * 1. Define line-height as normal to match FF3/4 (set using !important in the UA stylesheet)
