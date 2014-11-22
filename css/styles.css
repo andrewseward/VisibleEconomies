@@ -31,13 +31,18 @@ ul {
 }
 
 li  {
-	display: inline;
+	display: inline-block;
 }
 
 #top-tags-div li  {
-	border: 1px solid black;
-	padding: 3px;
-	margin: 2px;
+	color: white;
+	font-size: 12px;
+	text-transform: uppercase;
+	background-color: rgba(52, 52, 52, 1);
+	font-weight: bold;
+	padding: 8px;
+	margin-right: 3px;
+	margin-bottom: 8px;
 	border-radius: 3px;
 }
 
@@ -46,10 +51,15 @@ li  {
 }
 
 #selected-tags-div li {
-	border: 1px solid #8b79d0;
-	padding: 3px;
+	border: 1px solid rgba(77, 71, 91, 1);
+	background-color: rgba(77, 71, 91, 1);
+	font-size: 12px;
+	font-weight: bolder;
+	color: white;
+	padding: 8px;
 	margin: 2px;
 	border-radius: 3px;
+	text-transform: uppercase;
 }
 
 #selected-tags-div li:hover {
