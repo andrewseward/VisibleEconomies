@@ -98,21 +98,28 @@ $(function() {
       
       state.tagList.on("add remove", this.addAllAvailableTags, this);
       state.selectedTagList.on("add remove", this.addAllSelectedTags, this);
+      state.selectedTagList.on("add remove", this.fetch, this);
     },
 
     fetch: function() {
-      var profileList = state.profileList;
-
       var self = this;
-      Parse.Cloud.run("topTags", "", {
+
+      var tagNames = [];
+      state.selectedTagList.toArray().forEach(function(object) {
+        tagNames.push(object.toJSON().tagName);
+      });
+
+      Parse.Cloud.run("topTags", {"tagNames":tagNames}, {
         success: function(result) {
+          state.tagList.remove(state.tagList.toArray());
           state.tagList.add(result);
           self.addAllAvailableTags();
         }
       });
-      Parse.Cloud.run("matchingProfiles", "", {
+      Parse.Cloud.run("matchingProfiles", {"tagNames":tagNames}, {
         success: function(result) {
-          profileList.add(result);
+          state.profileList.remove(state.profileList.toArray());
+          state.profileList.add(result);
           self.addAllProfiles();
         }
       });
@@ -220,5 +227,38 @@ $(function() {
   new AppRouter;
   new AppView;
 //  Parse.history.start();
+  
+  var profileQuery = new Parse.Query("Profile");
+  profileQuery.containedIn("tagName", ["enamel", "woodwork"]);
+  profileQuery.find({
+    success: function(tagResults) {
+      console.log("success");
+    },
+    error: function() {
+      console.log("failure");
+    }
+  });
+  
+  // this finds all the joins where those tags appear
+  var joinQuery = new Parse.Query("ProfileTag");
+  joinQuery.matchesQuery("tag", tagQuery);
+  joinQuery.limit(20);
+//  joinQuery.includeKey("profile");
+  
+  joinQuery.find({
+    success: function(joinResults) {
+      var profiles = [];
+      
+      joinResults.forEach(function(object) {
+        profiles.push(object.profile);
+      });
+        
+     console.log("success");
+    },
+    error: function() {
+      console.log("failure");
+    }
+  });
+
 });
 
