@@ -1,5 +1,5 @@
 body {
-    background: #fcfbfb;
+    background: #f9f9f9;
     position: relative;
 }
 
@@ -8,9 +8,12 @@ h1 {
     margin-bottom: -10px;
     font-size: 35px;
     float: left;
-
-
+    text-shadow: 0px 2px 0px white;
 }
+
+hr {
+	box-shadow: 0px 1px 0px white
+	}
 
 .title {
 	width: 800px;
@@ -29,6 +32,7 @@ button {
 	padding: 10px;
 	background-color: #f0f0f0;
 	border: none;
+	box-shadow: 0px 1px 0px white
 	}
 
 ul {
@@ -54,6 +58,7 @@ br {
 	margin-bottom: 8px;
 	border-radius: 3px;
 	display: inline-block;
+	box-shadow: 0px 1px 0px white
 }
 
 #top-tags-div li:hover  {
@@ -90,19 +95,25 @@ input {text-transform: uppercase}
 	text-align: center;
 	border-radius: 3px;
 	font-size: 17px;
+	box-shadow: 0px 1px 0px white
 	
 }
 
 #prof {	
-	padding: 38px 4px 65px 4px;
-	border: 1px solid rgba(0, 0, 0, 0.1);
+	padding: 60px 4px 80px 4px;
+	border: 2px solid rgba(0, 0, 0, 0.07);
 	border-radius: 3px 3px 0px 0px;
 	background-color: #ededed;
 	font-weight: 500;
 	text-shadow: 0px 2px 1px white;
 	font-size: 16px;
 	text-transform: uppercase;
+	box-shadow: 0px 1px 0px white;
 	}
+	
+#prof:hover {
+	border: 2px solid rgba(131, 148, 222, 0.61)
+}
 	
 .profile-image {
 	width: 125px;
@@ -111,10 +122,7 @@ input {text-transform: uppercase}
 	border: 1px solid rgba(0, 0, 0, 0.2);
 	border-radius: 3px;
 	}
-	
-#prof:hover {
-	border: 1px solid rgba(131, 148, 222, 0.61)
-}
+
 
 #enquire {
 	margin-bottom: 10px;
@@ -129,6 +137,7 @@ input {text-transform: uppercase}
 #enquire:hover {
 	background-color: #22a042;
 	color: white;
+	cursor: pointer;
 }
 
 .error {
