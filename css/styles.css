@@ -1,5 +1,5 @@
 body {
-    background: #fcfcfc;
+    background: #fcfbfb;
     position: relative;
 }
 
@@ -20,8 +20,15 @@ h1 {
 
 button {
 	float: right;
-	top: 17px;
+	top: 15px;
 	position: relative;
+	border-radius: 2px;
+	text-transform: uppercase;
+	font-size: 12px;
+	font-weight: 600;
+	padding: 10px;
+	background-color: #f0f0f0;
+	border: none;
 	}
 
 ul {
@@ -30,9 +37,11 @@ ul {
 
 }
 
-li  {
-	display: inline-block;
+br {
+   display: block;
+   line-height:42px;
 }
+
 
 #top-tags-div li  {
 	color: white;
@@ -44,6 +53,7 @@ li  {
 	margin-right: 3px;
 	margin-bottom: 8px;
 	border-radius: 3px;
+	display: inline-block;
 }
 
 #top-tags-div li:hover  {
@@ -51,8 +61,7 @@ li  {
 }
 
 #selected-tags-div li {
-	border: 1px solid rgba(77, 71, 91, 1);
-	background-color: rgba(77, 71, 91, 1);
+	background-color: rgba(116, 121, 194, 1);
 	font-size: 12px;
 	font-weight: bolder;
 	color: white;
@@ -60,15 +69,35 @@ li  {
 	margin: 2px;
 	border-radius: 3px;
 	text-transform: uppercase;
+	display: inline-block;
 }
 
 #selected-tags-div li:hover {
-		border: 1px inset #bf0d0d;
+	background-color: #f74a4a
 	}
 
 #profiles-div {
 	margin-top: 10px;
 }
+
+#search {
+	height: 15px;
+	width: 100%;
+	border: 1px solid black; 
+	padding:10px 0px 10px 0px;
+	text-align: center;
+	border-radius: 3px;
+	font-size: 14px;
+	
+}
+
+#prof {	
+	padding: 28px;
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	border-radius: 3px;
+	margin-bottom: 12px;
+	background-color: #f4f4f4;
+	}
 
 .error {
     border: 1px solid red;

@@ -36,6 +36,11 @@ $(function() {
     selectedTagClick: function(event) {
       state.selectedTagList.remove(this.model);
       state.tagList.add(this.model);
+
+      state.selectedTagNames = [];
+      state.selectedTagList.forEach(function(tag) {
+        state.selectedTagNames.push(tag.get("tagName"));
+      });
     },
 
     initialize: function() {
@@ -60,6 +65,11 @@ $(function() {
     availableTagClick: function(event) {
       state.tagList.remove(this.model);
       state.selectedTagList.add(this.model);
+
+      state.selectedTagNames = [];
+      state.selectedTagList.forEach(function(tag) {
+        state.selectedTagNames.push(tag.get("tagName"));
+      });
     },
 
     initialize: function() {
@@ -125,14 +135,34 @@ $(function() {
       Parse.Cloud.run("topTags", {"tagNames":tagNames}, {
         success: function(result) {
           state.tagList.remove(state.tagList.toArray());
-          state.tagList.add(result);
+
+          result.forEach(function(tag) {
+            // hack!
+            if (!_.contains(state.selectedTagNames, tag.toJSON()["tagName"])) {
+                state.tagList.add(tag);
+            }
+          });
+          //state.tagList.add(result);
           self.addAllAvailableTags();
         }
       });
       Parse.Cloud.run("matchingProfiles", {"tagNames":tagNames}, {
         success: function(result) {
           state.profileList.remove(state.profileList.toArray());
-          state.profileList.add(result);
+          var probability = 1;
+          if (state.selectedTagNames.length == 1)
+            proability = 0.4;
+          else if (state.selectedTagNames.length == 2)
+            probability = 0.2;
+          else if (state.selectedTagNames.length == 3)
+            probability = 0.1;
+
+
+          result.forEach(function(profile) {
+            if (Math.random() < probability)
+              state.profileList.add(profile);
+          });
+//          state.profileList.add(result);
           state.profileList.trigger("profileschanged");
           self.addAllProfiles();
         }
@@ -241,6 +271,8 @@ $(function() {
   state.profileList = new ProfileList();
   state.tagList = new TagList();
   state.selectedTagList = new TagList();
+  // hack
+  state.selectedTagNames = [];
 
 
   new AppRouter;
