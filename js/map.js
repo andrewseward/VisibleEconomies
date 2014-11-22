@@ -1,8 +1,9 @@
 var map;
+var markers = [];
 
 function initializeMap() {
   var mapOptions = {
-    zoom: 14
+    zoom: 11
   };
   map = new google.maps.Map(document.getElementById('map-canvas'),
       mapOptions);
@@ -27,6 +28,44 @@ function initializeMap() {
     // Browser doesn't support Geolocation
     handleNoGeolocation(false);
   }
+}
+
+function clearMapMarkers(){
+  for (var i=0; i<markers.length; i++){
+    markers[i].setMap(null);
+  }
+  markers = [];
+}
+
+function addMapMarker(latitude, longitude){
+
+
+  /*var markerImage = {
+    url: 'https://cdn1.iconfinder.com/data/icons/Map-Markers-Icons-Demo-PNG/256/Map-Marker-Marker-Outside-Azure.png',
+    // This marker is 20 pixels wide by 32 pixels tall.
+    size: new google.maps.Size(20, 32),
+    // The origin for this image is 0,0.
+    origin: new google.maps.Point(0,0),
+    // The anchor for this image is the base of the flagpole at 0,32.
+    anchor: new google.maps.Point(0, 32)
+  };*/
+
+  var markerImage = new google.maps.MarkerImage(
+    'https://cdn1.iconfinder.com/data/icons/Map-Markers-Icons-Demo-PNG/256/Map-Marker-Marker-Outside-Azure.png',
+    null, /* size is determined at runtime */
+    null, /* origin is 0,0 */
+    null, /* anchor is bottom center of the scaled image */
+    new google.maps.Size(30, 30)
+);
+
+
+  var newMarker = new google.maps.Marker({
+      position: new google.maps.LatLng(latitude, longitude),
+      map: map,
+      icon: markerImage
+  });
+
+  markers.push(newMarker);
 }
 
 function handleNoGeolocation(errorFlag) {
